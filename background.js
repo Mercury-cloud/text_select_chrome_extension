@@ -12,3 +12,18 @@
       }]);
     });
   });
+
+  chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if(request.method.toLowerCase()==="getoptions") {
+        chrome.storage.sync.get(request.keys, function (res) {
+            sendResponse(res);
+        })
+    }
+
+    if(request.method.toLowerCase()==="setoptions") {
+        console.log("Setting options", request.data);
+        chrome.storage.sync.set(request.data, sendResponse);
+    }
+
+    return true;
+});
